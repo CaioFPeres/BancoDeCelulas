@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Banco de Celulas</title>
+
+
+    <!-- Feito por: Caio Peres -->
+
+
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="/__/firebase/8.2.5/firebase-app.js"></script>
+
+    <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+    <script src="/__/firebase/8.2.5/firebase-database.js"></script>
+
+    <!-- Add Firebase products that you want to use -->
+    <script src="/__/firebase/8.2.5/firebase-auth.js"></script>
+    <script src="/__/firebase/8.2.5/firebase-firestore.js"></script>
+    <!-- Initialize Firebase -->
+    <script src="/__/firebase/init.js"></script>
+    
+
+
+    <script src="firebaselogin.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+    <script>
+      
+      window.onload = function () {
+        
+        firebase.auth().onAuthStateChanged( user =>{
+
+          if(user){
+            window.location.href = "main";
+          }
+
+        });
+        
+      }
+      
+  
+      </script>
+
+
+  </head>
+
+
+  <body>
+
+
+    <div class="mainDiv">
+
+        <div class="validacaoEscondida" id="validacao">
+            <div class="confirmacao">
+            
+                <div class="preenchaCampos">Preencha todos os campos!</div>
+
+            </div>
+        </div>
+
+        <div class="validacaoEscondida" id="senhaInvalida">
+          <div class="confirmacao">
+          
+              <div class="errorMessage" id="errorMessage"></div>
+
+          </div>
+      </div>
+
+
+        <div class="titulo" style="margin-bottom: 0px;">Banco de Células</div>
+    
+
+        <div class="borderLogin">
+            
+          <form class="forms">
+
+            <div class="instLogin">
+              Login
+            </div>
+
+            <div class="form-group">
+              <input type="email" class="formInput" onkeyup="enter(event);" id="email" placeholder="Email">
+            </div>
+    
+            <div class="form-group">
+              <input type="password" class="formInput" onkeyup="enter(event);" id="senha" placeholder="Senha">
+            </div>
+
+            <div class="cadastrar">
+              <div class="cadastrarText">Clique para se cadastrar: </div>
+              <a class="cadastrarLink" href="/cadastrar">Cadastrar</a>
+            
+              <div class="cadastrarText">Esqueceu a senha? </div>
+              <a class="cadastrarLink" href="/recuperar">Recuperar</a>
+            
+            </div>
+
+            <br><br>
+            <button type="button" class="buttonPesquisar" onclick="login();">Entrar</button>
+
+
+          </form>
+          
+        </div>
+
+
+    </div>
+
+  </body>
+</html>

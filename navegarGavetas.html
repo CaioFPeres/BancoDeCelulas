@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+  <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Banco de Celulas</title>
+
+
+        <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+        <script src="/__/firebase/8.2.5/firebase-app.js"></script>
+
+        <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+        <script src="/__/firebase/8.2.5/firebase-database.js"></script>
+
+        <!-- Add Firebase products that you want to use -->
+        <script src="/__/firebase/8.2.5/firebase-auth.js"></script>
+        <script src="/__/firebase/8.2.5/firebase-firestore.js"></script>
+        <!-- Initialize Firebase -->
+        <script src="/__/firebase/init.js"></script>
+
+        
+
+        <script src="navegarGavetas.js"></script>
+        <link rel="stylesheet" type="text/css" href="style.css">
+
+
+        <script>
+
+            window.onload = function () {
+                
+                firebase.auth().onAuthStateChanged( user =>{
+
+                    if(!user){
+                        window.location.href = "index";
+                    }
+
+                });
+
+            }
+
+        </script>
+
+
+    </head>
+
+    
+    <body>
+
+        <div class="mainDiv">
+            
+            <div class="validacaoEscondida" id="loading">
+                <div class="confirmacao">
+                    <img class="loadingIMG" src="/loading.gif" height="100px" width="100px">
+                </div>
+            </div>
+            
+
+            <div class="validacaoEscondida" id="overlay">
+
+                <div class="resultado">
+
+                    <div class="fecharResultado" id="fechar">
+                        <span class="xis1"></span>
+                        <span class="xis2"></span>
+                    </div>
+
+                    <table class="tabelaResul" id="table">
+                        <tr id="tabletr">
+                        </tr>
+                    </table>
+
+                </div>
+
+            
+            </div>
+
+
+            <div class="validacaoEscondida" id="validacao">
+                <div class="confirmacao">
+                
+                    <div class="preenchaCampos">Selecione todos os campos!</div>
+
+                </div>
+            </div>
+
+            <div class="borderControlNavGav"></div>
+            <div class="border">
+
+                <a class="voltar" id="voltar" href="/main">
+                    <span class="sup"></span>
+                    <span class="inf"></span>
+                    <span class="horiz"></span>
+                </a>
+    
+                <form class="forms">
+
+                    <div class="inst">
+                        Informe qual container, rack e gaveta que deseja pesquisar. <br><br>
+                    </div>
+
+                    <div class="form-group">
+
+                        <select class="containers" id="container">
+                            <option selected="Container">Container</option>
+                            <option value = "1">I</option>
+                            <option value = "2">II</option>
+                            <option value = "3">III</option>
+                            <option value = "4">IV</option>
+                            <option value = "5">V</option>
+                            <option value = "6">VI</option>
+                            <option value = "7">VII</option>
+                        </select>
+
+                        <select class="containers" id="rack">
+                            <option selected="Rack">Rack</option>
+                            <option value = "1">1</option>
+                            <option value = "2">2</option>
+                            <option value = "3">3</option>
+                            <option value = "4">4</option>
+                            <option value = "5">5</option>
+                            <option value = "6">6</option>
+                        </select>
+
+                        <select class="containers" id="gaveta">
+                            <option selected="Gaveta">Gaveta</option>
+                            <option value = "1">A</option>
+                            <option value = "2">B</option>
+                            <option value = "3">C</option>
+                            <option value = "4">D</option>
+                            <option value = "5">E</option>
+                            <option value = "6">F</option>
+                            <option value = "7">G</option>
+                            <option value = "8">H</option>
+                            <option value = "9">I</option>
+                        </select>
+
+                    </div>
+        
+                    <br><br>
+                    <button type="button" class="buttonPesquisar" onclick="pesquisar();">Pesquisar</button>
+
+
+                </form>
+
+            </div>
+    
+
+        </div>
+        
+    </body>
+</html>

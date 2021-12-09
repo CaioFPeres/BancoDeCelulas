@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html>
+  <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Banco de Células</title>
+
+
+        <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+        <script src="/__/firebase/8.2.5/firebase-app.js"></script>
+
+        <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+        <script src="/__/firebase/8.2.5/firebase-database.js"></script>
+
+        <!-- Add Firebase products that you want to use -->
+        <script src="/__/firebase/8.2.5/firebase-auth.js"></script>
+        <script src="/__/firebase/8.2.5/firebase-firestore.js"></script>
+        <!-- Initialize Firebase -->
+        <script src="/__/firebase/init.js"></script>
+
+
+
+        <script src="pesquisarCelula.js"></script>
+        <script src="CellFeature.js"></script>
+        <link rel="stylesheet" type="text/css" href="style.css">
+
+
+        <script>
+
+            window.onload = function () {
+                
+                firebase.auth().onAuthStateChanged( user =>{
+
+                    if(!user){
+                        window.location.href = "index";
+                    }
+
+                });
+                
+
+            }
+
+        </script>
+
+
+    </head>
+
+    
+    <body>
+
+        <div class="mainDiv">
+
+            <div class="validacaoEscondida" id="overlay">
+                <div class="resultado">
+                    <div class="fecharResultado" id="fechar">
+                        <span class="xis1"></span>
+                        <span class="xis2"></span>
+                    </div>
+
+                    <table class="tabelaResul" id="table">
+                        <tr id="tabletr">
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
+
+
+            <div class="validacaoEscondida" id="loading">
+                <div class="confirmacao">
+                    <img class="loadingIMG" src="/loading.gif" height="100px" width="100px">
+                </div>
+            </div>
+
+
+            <div class="validacaoEscondida" id="validacao">
+                <div class="confirmacao">
+                
+                    <div class="preenchaCampos">Data inválida!</div>
+
+                </div>
+            </div>
+
+
+
+            <div class="border">
+
+                <a class="voltar" id="voltar" href="/main">
+                    <span class="sup"></span>
+                    <span class="inf"></span>
+                    <span class="horiz"></span>
+                </a>
+    
+                <form class="forms">
+
+                    <div class="inst">
+                        Escolha o tipo de célula a ser pesquisada, em seguida forneça as informações da célula que deseja encontrar. <br>
+                        <br><br>
+                    </div>
+
+                    <select class="opcoes" id="opcaoBanco" style="margin-bottom: 10px;" onchange="opcoesPrincipais()">
+                        <option value = "Banco">Banco</option>
+                        <option value = "Deletados">Deletados</option>
+                    </select>
+
+                    <div class="divisoria"></div>
+
+                    <select class="opcoes" id="opcaoPrincipal" style="margin-bottom: 60px;" onchange="opcoesPrincipais()">
+                        <option value = "acmm">AcMm</option>
+                        <option value = "linhagem">Linhagem</option>
+                        <option value = "primaria">Primária</option>
+                        <option value = "tecido">Tecido</option>
+                    </select>
+
+
+                    <div class="opcaoSelecionada" id="acmm">
+
+                        <div class="form-group">
+                            <input type="text" class="formInput" id="protocolo" placeholder="Protocolo">
+                        </div>
+
+                        <div class="form-group">
+                            <input type="text" class="formInput" id="Nprotocolo" onkeypress="validaPassagemProtocolo(event);" placeholder="Nº de Protocolo">
+                        </div>
+            
+                        <div class="form-group">
+                            <input type="text" class="formInput" id="Nhibrido" onkeypress="hibrido(event);" placeholder="Nº do Hibrido">
+                        </div>
+
+                        <div class="form-group">
+                            <input type="text" class="formInput" id="clonagem" placeholder="Clonagem">
+                        </div>
+
+                        <div class="form-group">
+                            <input type="text" class="formInput" id="especificidade" placeholder="Especificidade">
+                        </div>
+
+                        <div class="form-group">
+                            <input type="text" class="formInput" onkeypress="enter(event);" id="mod_por1" placeholder="Modificado por">
+                        </div>
+
+
+                        <div class="divDatas">
+                        
+                            <div class="form-group">
+                                <div class="dataText">Data de modificação: </div>
+                                <br>
+
+                                <div class="dataInputs">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="diaM1" placeholder="Dia">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="mesM1" placeholder="Mes">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="anoM1" placeholder="Ano">
+                                </div>
+
+                                <div class="dataText">à: </div>
+
+                                <div class="dataInputs">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="diaLM1" placeholder="Dia">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="mesLM1" placeholder="Mes">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="anoLM1" placeholder="Ano">
+                                </div>
+                            
+                            </div>
+
+                        </div>
+
+                        <div class="divDatas">
+
+                            <div class="form-group">
+                                <div class="dataText">Data de congelamento: </div>
+                                <br>
+
+                                <div class="dataInputs">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="diaC1" placeholder="Dia">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="mesC1" placeholder="Mes">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="anoC1" placeholder="Ano">
+                                </div>
+
+                                <div class="dataText">à: </div>
+
+                                <div class="dataInputs">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="diaLC1" placeholder="Dia">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="mesLC1" placeholder="Mes">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="anoLC1" placeholder="Ano">
+                                </div>
+
+                            </div>
+                        
+                        </div>
+
+                    </div>
+
+
+                    <div class="opcaoEscondida" id="linhagem">
+
+                        <div class="form-group">
+                            <input type="text" class="formInput" id="denominacao" placeholder="Denominação">
+                        </div>
+
+
+                        <select class="opcoes" id="opcaoOrigem" onchange="opcoesLinhagem();">
+                            <option selected="Origem" value = "">Selecione Origem Animal</option>
+                            <option value = "Boi">Boi</option>
+                            <option value = "Caprino">Caprino</option>
+                            <option value = "Cavalo">Cavalo</option>
+                            <option value = "Cão">Cão</option>
+                            <option value = "Coelho">Coelho</option>
+                            <option value = "Humano">Humano</option>
+                            <option value = "Murino">Murino</option>
+                            <option value = "Ovino">Ovino</option>
+                            <option value = "Rato">Rato</option>
+                            <option value = "Suino">Suino</option>
+                            <option value = "Outro">Outro</option>
+                        </select>
+
+
+                        <div class="opcaoEscondida" id="OutroTipoAnimalLinhagem">
+                            <div class="form-group">
+                                <input type="text" class="formInput" id="NomeOutroTipoAnimalLinhagem" placeholder="Nome do animal">
+                            </div>
+                        </div>
+
+
+                        <select class="opcoes" id="opcaoTipoCulturaLinhagem">
+                            <option selected="TipoDeCultura" value = "">Selecione o tipo de cultura</option>
+                            <option value = "Aderente">Aderente</option>
+                            <option value = "Suspensão">Suspensão</option>
+                            <option value = "3D">3D</option>
+                        </select>
+
+
+                        <div class="form-group">
+                            <input type="text" class="formInput" id="origem" placeholder="Tecido de Origem">
+                        </div>
+            
+                        <div class="form-group">
+                            <input type="text" class="formInput" id="obtidaDe" placeholder="Obtida de">
+                        </div>
+
+                        <div class="form-group">
+                            <input type="text" class="formInput" onkeypress="enter(event);" id="mod_por2" placeholder="Modificado por">
+                        </div>
+
+                        <div class="divDatas">
+
+                            <div class="form-group">
+                                <div class="dataText">Data de modificação: </div>
+                                <br>
+
+                                <div class="dataInputs">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="diaM2" placeholder="Dia">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="mesM2" placeholder="Mes">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="anoM2" placeholder="Ano">
+                                </div>
+
+                                <div class="dataText">à: </div>
+
+                                <div class="dataInputs">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="diaLM2" placeholder="Dia">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="mesLM2" placeholder="Mes">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="anoLM2" placeholder="Ano">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="divDatas">
+
+                            <div class="form-group">
+                                <div class="dataText">Data de congelamento: </div>
+                                <br>
+
+                                <div class="dataInputs">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="diaC2" placeholder="Dia">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="mesC2" placeholder="Mes">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="anoC2" placeholder="Ano">
+                                </div>
+
+                                <div class="dataText">à: </div>
+
+                                <div class="dataInputs">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="diaLC2" placeholder="Dia">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="mesLC2" placeholder="Mes">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="anoLC2" placeholder="Ano">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="opcaoEscondida" id="primaria">
+
+                        <div class="form-group">
+                            <input type="text" class="formInput" id="denominacaoP" placeholder="Denominação">
+                        </div>
+
+
+                        <select class="opcoes" onchange="opcoesPrimariaTipoCelula()" id="opcaoTipo">
+                            <option selected="Tipo" value = "">Selecione o tipo de origem</option>
+                            <option value = "Adipócitos">Adipócitos</option>
+                            <option value = "CTM-TA">CTM - TA</option>
+                            <option value = "CTM-CO">CTM - CO</option>
+                            <option value = "CTM-Limbo">CTM - Limbo</option>
+                            <option value = "Endoteliais">Endoteliais</option>
+                            <option value = "Epiteliais">Epiteliais</option>
+                            <option value = "Fibroblastos">Fibroblastos</option>
+                            <option value = "Hematopoiéticos">Hematopoiéticos</option>
+                            <option value = "Melanócitos">Melanócitos</option>
+                            <option value = "Monócitos">Monócitos</option>
+                            <option value = "Musculo">Musculo</option>
+                            <option value = "Osteoblasto">Osteoblasto</option>
+                            <option value = "Queratinócitos">Queratinócitos</option>
+                            <option value = "Outro">Outro</option>
+                        </select>
+
+                        <div class="opcaoEscondida" id="OutroTipoCelula">
+                            <div class="form-group">
+                                <input type="text" class="formInput" id="NomeOutroTipoCelula" placeholder="Nome">
+                            </div>
+                        </div>
+
+
+                        <select class="opcoes" onchange="opcoesPrimariaTipoAnimal()" id="opcaoTipoAnimal">
+                            <option selected="TipoDeAnimal" value = "">Selecione o tipo de animal</option>
+                            <option value = "Boi">Boi</option>
+                            <option value = "Caprino">Caprino</option>
+                            <option value = "Cavalo">Cavalo</option>
+                            <option value = "Cão">Cão</option>
+                            <option value = "Coelho">Coelho</option>
+                            <option value = "Humano">Humano</option>
+                            <option value = "Murino">Murino</option>
+                            <option value = "Ovino">Ovino</option>
+                            <option value = "Rato">Rato</option>
+                            <option value = "Suino">Suino</option>
+                            <option value = "Outro">Outro</option>
+                        </select>
+
+
+                        <div class="opcaoEscondida" id="OutroTipoAnimalPrimaria">
+                            <div class="form-group">
+                                <input type="text" class="formInput" id="NomeOutroTipoAnimalPrimaria" placeholder="Nome do animal">
+                            </div>
+                        </div>
+
+
+                        <select class="opcoes" id="opcaoTipoCultura">
+                            <option selected="TipoDeCultura" value = "">Selecione o tipo de cultura</option>
+                            <option value = "Aderente">Aderente</option>
+                            <option value = "Suspensão">Suspensão</option>
+                            <option value = "3D">3D</option>
+                        </select>
+
+                        <div class="form-group">
+                            <input type="text" class="formInput" onkeypress="validaPassagemProtocolo(event);" id="passagemPrimaria" placeholder="Passagem">
+                        </div>
+
+                        <div class="form-group">
+                            <input type="text" class="formInput" onkeypress="enter(event);" id="mod_por3" placeholder="Modificado por">
+                        </div>
+
+
+                        <div class="divDatas">
+
+                            <div class="form-group">
+                                <div class="dataText">Data de modificação: </div>
+                                <br>
+
+                                <div class="dataInputs">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="diaM3" placeholder="Dia">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="mesM3" placeholder="Mes">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="anoM3" placeholder="Ano">
+                                </div>
+
+                                <div class="dataText">à: </div>
+
+                                <div class="dataInputs">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="diaLM3" placeholder="Dia">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="mesLM3" placeholder="Mes">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="anoLM3" placeholder="Ano">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="divDatas">
+
+                            <div class="form-group">
+                                <div class="dataText">Data de congelamento: </div>
+                                <br>
+
+                                <div class="dataInputs">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="diaC3" placeholder="Dia">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="mesC3" placeholder="Mes">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="anoC3" placeholder="Ano">
+                                </div>
+
+                                <div class="dataText">à: </div>
+
+                                <div class="dataInputs">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="diaLC3" placeholder="Dia">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="mesLC3" placeholder="Mes">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="anoLC3" placeholder="Ano">
+                                </div>
+                            
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="opcaoEscondida" id="tecido">
+
+                        <select class="opcoes" id="opcaoTecido" onchange="opcoesTecido()">
+                            <option selected="TipoDeAnimal" value = "">Selecione o tipo de animal</option>
+                            <option value = "Boi">Boi</option>
+                            <option value = "Caprino">Caprino</option>
+                            <option value = "Cavalo">Cavalo</option>
+                            <option value = "Cão">Cão</option>
+                            <option value = "Coelho">Coelho</option>
+                            <option value = "Humano">Humano</option>
+                            <option value = "Murino">Murino</option>
+                            <option value = "Ovino">Ovino</option>
+                            <option value = "Rato">Rato</option>
+                            <option value = "Suino">Suino</option>
+                            <option value = "Outro">Outro</option>
+                        </select>
+
+
+                        <div class="opcaoEscondida" id="humanoTecido">
+
+                            <div class="form-group">
+                                <input type="text" class="formInput" id="doador" placeholder="Doador">
+                            </div>
+
+                            <div class="form-group">
+                                <input type="text" class="formInput" id="rghc" placeholder="RG-HC">
+                            </div>
+
+                            <div class="form-group">
+                                <div class="dataText">Data de Nascimento: </div>
+                                <br>
+                                <input type="text" class="data" onkeypress="validaData(event);" id="diaN" placeholder="Dia">
+                                <input type="text" class="data" onkeypress="validaData(event);" id="mesN" placeholder="Mes">
+                                <input type="text" class="data" onkeypress="validaData(event);" id="anoN" placeholder="Ano">
+                            </div>
+                            
+                        </div>
+
+
+                        <div class="opcaoEscondida" id="outro">
+
+                            <div class="form-group">
+                                <input type="text" class="formInput" id="outroTipo" placeholder="Tipo de animal">
+                            </div>
+
+                        </div>
+
+
+                        <div class="opcaoEscondida" id="siglaDoAnimal">
+                            <div class="form-group">
+                                <input type="text" class="formInput" id="siglaAnimal" placeholder="Sigla">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <input type="text" class="formInput" onkeypress="enter(event);" id="mod_por4" placeholder="Modificado por">
+                        </div>
+
+                        
+                        <div class="divDatas">
+
+                            <div class="form-group">
+                                <div class="dataText">Data de modificação: </div>
+                                <br>
+
+                                <div class="dataInputs">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="diaM4" placeholder="Dia">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="mesM4" placeholder="Mes">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="anoM4" placeholder="Ano">
+                                </div>
+
+                                <div class="dataText">à: </div>
+
+                                <div class="dataInputs">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="diaLM4" placeholder="Dia">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="mesLM4" placeholder="Mes">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="anoLM4" placeholder="Ano">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="divDatas">
+
+                            <div class="form-group">
+                                <div class="dataText">Data de congelamento: </div>
+                                <br>
+
+                                <div class="dataInputs">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="diaC4" placeholder="Dia">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="mesC4" placeholder="Mes">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="anoC4" placeholder="Ano">
+                                </div>
+
+                                <div class="dataText">à: </div>
+
+                                <div class="dataInputs">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="diaLC4" placeholder="Dia">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="mesLC4" placeholder="Mes">
+                                    <input type="text" class="data" onkeypress="validaData(event);" id="anoLC4" placeholder="Ano">
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+        
+                    <button type="button" class="buttonPesquisar" onclick="pesquisar();">Pesquisar</button>
+
+                </form>
+
+            </div>
+
+    
+        </div>
+        
+    </body>
+</html>

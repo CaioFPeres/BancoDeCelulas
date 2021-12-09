@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "bancodecelulas-bfa74"
+  },
+  "targets": {
+    "bancodecelulas-bfa74": {
+      "hosting": {
+        "bancocelulas": [
+          "bancocelulas"
+        ]
+      }
+    }
+  }
+}

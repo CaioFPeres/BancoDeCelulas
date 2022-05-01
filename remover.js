@@ -77,7 +77,7 @@ function remover(){
 function posicao(e){
 
     if (e.keyCode == 13)
-        inserir();
+        remover();
 
     
     if(isNaN(e.key)){
@@ -85,8 +85,53 @@ function posicao(e){
     }
 
 
-    if (parseInt(e.target.value + e.key) == 0 || parseInt(e.target.value + e.key) > 10){
+    if(e.target.value.length == 0 && e.key == "0")
         e.preventDefault();
+
+
+    if (parseInt(e.target.value + e.key) > 10){
+
+        if(getSelectedTextLength() > 0){
+            
+            if(e.target.value.split("")[1] && getSelectedTextLength() < 2){
+                e.preventDefault();
+            }
+            else if (e.key == "0"){
+                e.preventDefault();
+            }
+
+        }
+        else{
+            e.preventDefault();
+        }
+
+    }
+    else if (parseInt(e.target.value + e.key) == 10 && getSelectedTextLength() > 0){
+        if(e.key == "0")
+            e.preventDefault();
     }
 
+}
+
+function getSelectedTextLength() {
+
+    var textLength = 0;
+
+    // window.getSelection
+    if (window.getSelection) {
+        textLength = window.getSelection().toString().length;
+    }
+    // document.getSelection
+    else if (document.getSelection) {
+        textLength = document.getSelection().toString().length;
+    }
+    // document.selection
+    else if (document.selection) {
+        textLength = document.selection.createRange().text.length;
+    }
+    // browser desconhecido
+    else
+        return;
+
+    return textLength;
 }

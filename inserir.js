@@ -162,12 +162,6 @@ function opcoesTecido(){
 }
 
 
-function enter(e){
-    if (e.keyCode == 13)
-        inserir();
-}
-
-
 function validaData(e){
 
     if (e.keyCode == 13)
@@ -308,6 +302,11 @@ function posicao(e){
 
 }
 
+
+function enter(e){
+    if (e.keyCode == 13)
+        inserir();
+}
 
 // o split padrão não funciona direito, remove varias vezes o mesmo elemento  ( "22".split("2", 1) )
 function privateSplit(string, delimiter){
@@ -627,6 +626,7 @@ function celulaTecido(){
 
 
 // funcao para inserir dados
+/*
 function inserirTeste(){
 
 
@@ -997,3 +997,4 @@ function inserirTeste(){
     firebase.database().ref("Banco/" + container + "/" + rack + "/" + gaveta + "/" + linha + "-" + 24).set(celula);
 
 }
+*/

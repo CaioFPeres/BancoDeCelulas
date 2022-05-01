@@ -562,6 +562,7 @@ html, body{
     word-wrap: break-word;
 }
 
+
 .tabelaResul th, tr, td{
     padding-left: 3px;
     text-align: middle;
@@ -572,6 +573,28 @@ html, body{
     background-color: rgb(255, 255, 255);
 }
 
+.tabelaResulMod{
+    table-layout: fixed;
+    font-size: 17px;
+    min-width: 800px;
+    margin-top: 60px;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgb(134, 134, 134);
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+.tabelaResulMod th, tr, td{
+    padding-left: 3px;
+    text-align: middle;
+    border: 1px solid black;
+}
+
+.tabelaResulMod th, td{
+    background-color: rgb(255, 255, 255);
+}
 
 
 

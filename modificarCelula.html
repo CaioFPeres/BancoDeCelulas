@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Banco de Células</title>
 
-        
+
         <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
         <script src="/__/firebase/8.2.5/firebase-app.js"></script>
 
@@ -20,19 +20,23 @@
 
 
 
-        <script src="inserir.js"></script>
+        <script src="modificarCelula.js"></script>
+        <script src="CellFeature.js"></script>
         <link rel="stylesheet" type="text/css" href="style.css">
-    </head>
 
+
+
+
+    </head>
+    
     <script>
 
         var usuario;
 
         window.onload = function () {
-        
-            //verifica se o usuario está logado e atribui nome a variavel
-            firebase.auth().onAuthStateChanged( user => {
-                
+            
+            firebase.auth().onAuthStateChanged( user =>{
+
                 if (user) {
                     usuario = user.displayName;
                 }
@@ -40,9 +44,11 @@
                     usuario = null;
                     window.location.href = "index";
                 }
+
             });
+            
+
         }
-        
 
     </script>
 
@@ -60,28 +66,18 @@
             <div class="validacaoEscondida" id="confirmado">
                 <div class="confirmacao">
                 
-                    <div class="palavra">Inserido!</div>
+                    <div class="palavra">Modificado!</div>
 
                 </div>
             </div>
 
             <div class="validacaoEscondida" id="validacao">
                 <div class="confirmacao">
-                
-                    <div class="preenchaCampos">Preencha todos os campos corretamente!</div>
-
+                    <div class="preenchaCampos" id="validacaoErro"></div>
                 </div>
             </div>
 
-            <div class="validacaoEscondida" id="existeElemento">
-                <div class="confirmacao">
-                
-                    <div class="palavraValidacao">Ja existe um elemento nesse local!</div>
-
-                </div>
-            </div>
-
-
+            <div class="borderControlNavGav"></div>
             <div class="border">
 
                 <a class="voltar" id="voltar" href="/main">
@@ -93,16 +89,83 @@
                 <form class="forms">
 
                     <div class="inst">
-                        Escolha o tipo de célula a ser inserida, em seguida forneça as informações da célula que deseja inserir no banco. <br>
-                        <br><br>
+                        Informe container, rack, gaveta, linha e coluna da celula que deseja modificar. <br><br>
                     </div>
 
-                    <select class="opcoes" id="opcaoPrincipal" style="margin-bottom: 50px;" onchange="opcoesPrincipais()">
-                        <option value = "acmm">AcMm</option>
-                        <option value = "linhagem">Linhagem</option>
-                        <option value = "primaria">Primária</option>
-                        <option value = "tecido">Tecido</option>
-                    </select>
+                    <div class="form-group">
+
+                        <select class="containers" id="container">
+                            <option selected="Container">Container</option>
+                            <option value = "1">I</option>
+                            <option value = "2">II</option>
+                            <option value = "3">III</option>
+                            <option value = "4">IV</option>
+                            <option value = "5">V</option>
+                            <option value = "6">VI</option>
+                            <option value = "7">VII</option>
+                        </select>
+
+                        <select class="containers" id="rack">
+                            <option selected="Rack">Rack</option>
+                            <option value = "1">1</option>
+                            <option value = "2">2</option>
+                            <option value = "3">3</option>
+                            <option value = "4">4</option>
+                            <option value = "5">5</option>
+                            <option value = "6">6</option>
+                        </select>
+
+                        <select class="containers" id="gaveta">
+                            <option selected="Gaveta">Gaveta</option>
+                            <option value = "1">A</option>
+                            <option value = "2">B</option>
+                            <option value = "3">C</option>
+                            <option value = "4">D</option>
+                            <option value = "5">E</option>
+                            <option value = "6">F</option>
+                            <option value = "7">G</option>
+                            <option value = "8">H</option>
+                            <option value = "9">I</option>
+                        </select>
+
+                    </div>
+
+                    <div class="form-group">
+                        <div class="linhaColuna">
+                            <input type="text" class="formInput" onkeypress="posicao(event);" id="linha" placeholder="Linha">
+                            <input type="text" class="formInput" style="float: right;" onkeypress="posicao(event);" id="coluna" placeholder="Coluna">
+                        </div>
+                    </div>
+        
+                    <button type="button" class="buttonPesquisar" onclick="pesquisar();">Pesquisar</button>
+                </form>
+            
+            </div>
+
+            <div class="resultado">
+
+                <table class="tabelaResulMod" id="table">
+                    <tr id="tabletr">
+                    </tr>
+                </table>
+
+            </div>
+
+            <div class="borderControlNavGav"></div>
+            <div class="border">
+
+                <a class="voltar" id="voltar" href="/main">
+                    <span class="sup"></span>
+                    <span class="inf"></span>
+                    <span class="horiz"></span>
+                </a>
+    
+                <form class="forms">
+
+                    <div class="inst">
+                        Primeiro pesquise a celula a ser modificada, depois modifique apenas os campos a serem alterados. Os campos que ficarem vazios não serão alterados. <br>
+                        <br><br>
+                    </div>
 
 
                     <div class="opcaoSelecionada" id="acmm">
@@ -339,70 +402,20 @@
                     </div>
 
 
-                    <br><br>
-
-                    
-                    <div class="posicao">Posição:
-                        
-                        <select class="containers" id="container">
-                            <option selected="Container">Container</option>
-                            <option value = "1">I</option>
-                            <option value = "2">II</option>
-                            <option value = "3">III</option>
-                            <option value = "4">IV</option>
-                            <option value = "5">V</option>
-                            <option value = "6">VI</option>
-                            <option value = "7">VII</option>
-                        </select>
-
-                        <select class="containers" id="rack">
-                            <option selected="Rack">Rack</option>
-                            <option value = "1">1</option>
-                            <option value = "2">2</option>
-                            <option value = "3">3</option>
-                            <option value = "4">4</option>
-                            <option value = "5">5</option>
-                            <option value = "6">6</option>
-                        </select>
-
-                        <select class="containers" id="gaveta">
-                            <option selected="Gaveta">Gaveta</option>
-                            <option value = "1">A</option>
-                            <option value = "2">B</option>
-                            <option value = "3">C</option>
-                            <option value = "4">D</option>
-                            <option value = "5">E</option>
-                            <option value = "6">F</option>
-                            <option value = "7">G</option>
-                            <option value = "8">H</option>
-                            <option value = "9">I</option>
-                        </select>
-
-
-                        <div class="form-group">
-                            <div class="linhaColuna">
-                                <input type="text" class="formInput" onkeypress="posicao(event);" id="linha" placeholder="Linha">
-                                <input type="text" class="formInput" style="float: right;" onkeypress="posicao(event);" id="coluna" placeholder="Coluna">
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <br><br>
-
                     <div class="form-group">
                         <input type="text" class="formInput" id="obs" onkeypress="enter(event);" placeholder="Obs">
                     </div>
 
         
 
-                    <button type="button" class="buttonPesquisar" onclick="inserir();">Inserir</button>
+                    <button type="button" class="buttonPesquisar" onclick="modificar();">Inserir</button>
 
                     
 
                 </form>
 
             </div>
+            <div class="borderControlNavGav"></div>
     
         </div>
         

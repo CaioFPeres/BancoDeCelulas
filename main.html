@@ -58,7 +58,7 @@
           var ultimoMes = ultimaVez.getMonth() + 1;
 
           
-          if( ultimoMes - mesHoje >= 1 ){
+          if( mesHoje - ultimoMes >= 1 ){
             backup();
           }
           
@@ -91,6 +91,7 @@
       <a class="buttonMain" href="/pesquisarCelula">Pesquisar por Célula</a>
       <a class="buttonMain" href="/navegarGavetas">Navegar pelas Gavetas</a>
       <a class="buttonMain" href="/inserir">Inserir Célula</a>
+      <a class="buttonMain" href="/modificarCelula">Modificar Célula</a>
       <a class="buttonMain" href="/remover">Remover Célula</a>
       <a class="buttonMain" href="/estatisticas">Estatísticas</a>
       <a class="buttonLogout" onclick="logout();">Logout</a>

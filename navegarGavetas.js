@@ -25,14 +25,6 @@ function pesquisar(){
     });
 
 
-    
-    //listener para mensagem de erro
-    document.getElementById("validacao").addEventListener("animationend", () => {
-        document.getElementById("validacao").className = "validacaoEscondida";
-        document.getElementById("validacao").removeEventListener("animationend", arguments.callee);
-    });
-
-
     var search = {
         container: document.getElementById("container").value,
         rack: document.getElementById("rack").value,
@@ -44,6 +36,11 @@ function pesquisar(){
             //erro
             document.getElementById("validacao").className = "validacao";
             limparTable(table, headers);
+            //listener para mensagem de erro
+            document.getElementById("validacao").addEventListener("animationend", () => {
+                document.getElementById("validacao").className = "validacaoEscondida";
+                document.getElementById("validacao").removeEventListener("animationend", arguments.callee);
+            });
             return;
         }
     }

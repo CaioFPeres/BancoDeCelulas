@@ -10,7 +10,7 @@ function pesquisar(){
 
 
     //listener para fechar a janela
-    document.getElementById("fechar").addEventListener("click", function() {
+    let listenerFunction = () => {
 
         document.getElementById("overlay").className = "validacaoEscondida";
 
@@ -21,8 +21,10 @@ function pesquisar(){
         document.getElementsByTagName("html")[0].style.overflowX = "auto";
 
         //remove listener
-        document.getElementById("fechar").removeEventListener("click", arguments.callee);
-    });
+        document.getElementById("fechar").removeEventListener("click", listenerFunction);
+    }
+
+    document.getElementById("fechar").addEventListener("click", listenerFunction);
 
 
     var search = {
@@ -33,14 +35,18 @@ function pesquisar(){
 
     for (let p in search){
         if(isNaN(search[p])){
+            
             //erro
             document.getElementById("validacao").className = "validacao";
             limparTable(table, headers);
-            //listener para mensagem de erro
-            document.getElementById("validacao").addEventListener("animationend", () => {
+
+            let listenerFunction2 = () => {
                 document.getElementById("validacao").className = "validacaoEscondida";
-                document.getElementById("validacao").removeEventListener("animationend", arguments.callee);
-            });
+                document.getElementById("validacao").removeEventListener("animationend", listenerFunction2);
+            }
+
+            //listener para mensagem de erro
+            document.getElementById("validacao").addEventListener("animationend", listenerFunction2);
             return;
         }
     }

@@ -4,7 +4,7 @@ function backup(){
     document.getElementById("avisoBackup").className = "avisoBackup";
 
 
-    //mais facil pegar o banco inteiro e salvar, porem consome alguns kbytes a mais (vem com funcoes do firebase junto)
+    //mais facil pegar o banco inteiro e salvar, porem consome alguns kbytes a mais (vem com objetos do firebase junto)
     firebase.database().ref().once("value", snap => {
 
         

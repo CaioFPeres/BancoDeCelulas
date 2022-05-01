@@ -10,10 +10,12 @@ function recuperar(){
         
             document.getElementById("confirmado").className = "validacao";
 
-            document.getElementById("confirmado").addEventListener("animationend", () => {
+            let listenerFunction = () => {
                 document.getElementById("confirmado").className = "validacaoEscondida";
-                document.getElementById("confirmado").removeEventListener("animationend", arguments.callee);
-            });
+                document.getElementById("confirmado").removeEventListener("animationend", listenerFunction);
+            }
+
+            document.getElementById("confirmado").addEventListener("animationend", listenerFunction);
 
         }).catch(function(error) {
         
@@ -21,10 +23,12 @@ function recuperar(){
 
             errorElement.innerText = error.message;
 
-            document.getElementById("senhaInvalida").addEventListener("animationend", () => {
+            let listenerFunction = () => {
                 document.getElementById("senhaInvalida").className = "validacaoEscondida";
-                document.getElementById("senhaInvalida").removeEventListener("animationend", arguments.callee);
-            });
+                document.getElementById("senhaInvalida").removeEventListener("animationend", listenerFunction);
+            }
+
+            document.getElementById("senhaInvalida").addEventListener("animationend", listenerFunction);
 
         });
 
@@ -33,10 +37,12 @@ function recuperar(){
 
         document.getElementById("validacao").className = "validacao";
 
-        document.getElementById("validacao").addEventListener("animationend", () => {
+        let listenerFunction = () => {
             document.getElementById("validacao").className = "validacaoEscondida";
-            document.getElementById("validacao").removeEventListener("animationend", arguments.callee);
-        });
+            document.getElementById("validacao").removeEventListener("animationend", listenerFunction);
+        }
+
+        document.getElementById("validacao").addEventListener("animationend", listenerFunction);
 
     }
 

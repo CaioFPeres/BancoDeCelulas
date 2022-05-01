@@ -6,7 +6,7 @@ function pesquisar(){
 
     let table = document.getElementById("table");
 
-    limparTable(table);
+    limparTable();
     
     search = {
         container: document.getElementById("container").value,
@@ -99,12 +99,14 @@ function inserir(celula){
         document.getElementById("confirmado").className = "validacao";
     });
     
-
-    // remove a confirmação depois de alguns segundos
-    document.getElementById("confirmado").addEventListener("animationend", () => {
+    let listenerFunction = () => {
         document.getElementById("confirmado").className = "validacaoEscondida";
-        document.getElementById("confirmado").removeEventListener("animationend", arguments.callee);
-    });
+        pesquisar();
+        document.getElementById("confirmado").removeEventListener("animationend", listenerFunction);
+    }
+    
+    // remove a confirmação depois de alguns segundos
+    document.getElementById("confirmado").addEventListener("animationend", listenerFunction);
 
 }
 
@@ -285,10 +287,12 @@ function ErrorMessage(message){
             
     document.getElementById("validacaoErro").innerHTML = message;
 
-    document.getElementById("validacao").addEventListener("animationend", () => {
+    let listenerFunction = () => {
         document.getElementById("validacao").className = "validacaoEscondida";
-        document.getElementById("validacao").removeEventListener("animationend", arguments.callee);
-    });
+        document.getElementById("validacao").removeEventListener("animationend", listenerFunction);
+    }
+
+    document.getElementById("validacao").addEventListener("animationend", listenerFunction);
 }
 
 
@@ -604,16 +608,19 @@ function getData(id){
 }
 
 
-function limparTable(table){
+function limparTable(){
+
+    let table = document.getElementById("table");
 
     while ( table.rows.length > 1 )
     {
-     table.deleteRow(1);
+        table.deleteRow(1);
     }
-
-    while(table.rows[0].cells.length != 0){
+    
+    while(table.rows[0].cells.length > 0){
         table.rows[0].cells[table.rows[0].cells.length - 1].remove();
     }
+    
 
 }
 

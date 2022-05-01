@@ -23,10 +23,12 @@ function login(){
 
                 errorElement.innerText = error.message;
 
-                document.getElementById("senhaInvalida").addEventListener("animationend", () => {
+                let listenerFunction = () => {
                     document.getElementById("senhaInvalida").className = "validacaoEscondida";
-                    document.getElementById("senhaInvalida").removeEventListener("animationend", arguments.callee);
-                });
+                    document.getElementById("senhaInvalida").removeEventListener("animationend", listenerFunction);
+                }
+
+                document.getElementById("senhaInvalida").addEventListener("animationend", listenerFunction);
 
             });
 
@@ -37,10 +39,12 @@ function login(){
 
         document.getElementById("validacao").className = "validacao";
 
-        document.getElementById("validacao").addEventListener("animationend", () => {
+        let listenerFunction = () => {
             document.getElementById("validacao").className = "validacaoEscondida";
-            document.getElementById("validacao").removeEventListener("animationend", arguments.callee);
-        });
+            document.getElementById("validacao").removeEventListener("animationend", listenerFunction);
+        }
+
+        document.getElementById("validacao").addEventListener("animationend", listenerFunction);
 
     }
     

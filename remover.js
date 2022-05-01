@@ -18,10 +18,12 @@ function remover(){
                 
                 document.getElementById("existeElemento").className = "validacao";
 
-                document.getElementById("existeElemento").addEventListener("animationend", () => {
+                let listenerFunction = () => {
                     document.getElementById("existeElemento").className = "validacaoEscondida";
-                    document.getElementById("existeElemento").removeEventListener("animationend", arguments.callee);
-                });
+                    document.getElementById("existeElemento").removeEventListener("animationend", listenerFunction);
+                }
+
+                document.getElementById("existeElemento").addEventListener("animationend", listenerFunction);
             
             }
             else{
@@ -47,13 +49,14 @@ function remover(){
                 //mostra confirmação da remoção
                 document.getElementById("confirmado").className = "validacao";
 
-                document.getElementById("confirmado").addEventListener("animationend", () => {
+                let listenerFunction2 = () => {
                     document.getElementById("confirmado").className = "validacaoEscondida";
-                    document.getElementById("confirmado").removeEventListener("animationend", arguments.callee);
-                });
+                    document.getElementById("confirmado").removeEventListener("animationend", listenerFunction2);
+                }
+
+                document.getElementById("confirmado").addEventListener("animationend", listenerFunction2);
 
             }
-
 
         });
 
@@ -62,11 +65,12 @@ function remover(){
 
         document.getElementById("validacao").className = "validacao";
 
-        document.getElementById("validacao").addEventListener("animationend", () => {
+        let listenerFunction3 = () => {
             document.getElementById("validacao").className = "validacaoEscondida";
-            document.getElementById("validacao").removeEventListener("animationend", arguments.callee);
+            document.getElementById("validacao").removeEventListener("animationend", listenerFunction3);
+        }
 
-        });
+        document.getElementById("validacao").addEventListener("animationend", listenerFunction3);
 
     }
 

@@ -51,18 +51,20 @@ function pesquisar(){
     document.getElementsByTagName("html")[0].style.overflowY = "hidden";
     document.getElementsByTagName("html")[0].style.overflowX = "hidden";
 
-    //listener para fechar a janela
-    document.getElementById("fechar").addEventListener("click", function() {
 
+    //listener para fechar a janela
+    let listenerFunction = () => {
         document.getElementById("overlay").className = "validacaoEscondida";
 
         limparTable(table, headers);
         
         document.getElementsByTagName("html")[0].style.overflowY = "auto";
         document.getElementsByTagName("html")[0].style.overflowX = "auto";
-        document.getElementById("fechar").removeEventListener("click", arguments.callee);
+        document.getElementById("fechar").removeEventListener("click", listenerFunction);
+    }
 
-    });
+    
+    document.getElementById("fechar").addEventListener("click", listenerFunction);
 
 
     //soh existe um caso de null: se o usuario preencher as datas de forma incompleta/incorretamente
@@ -70,11 +72,12 @@ function pesquisar(){
         
         document.getElementById("validacao").className = "validacao";
 
-        document.getElementById("validacao").addEventListener("animationend", () => {
+        let listenerFunction2 = () => {
             document.getElementById("validacao").className = "validacaoEscondida";
-            document.getElementById("validacao").removeEventListener("animationend", arguments.callee);
+            document.getElementById("validacao").removeEventListener("animationend", listenerFunction2);
+        }
 
-        });
+        document.getElementById("validacao").addEventListener("animationend", listenerFunction2);
 
         return;
     }
